@@ -39,8 +39,8 @@ public class NaughtsAndCrosses<Tile> extends Application {
 
 
 
-    private final Image board = new Image("file:src/main/resources/boardBrown.jpg");
-    private final Image cross = new Image("file:src/main/resources/cross.png");
+    private final Image board = new Image("file:src/main/resources/boardBrown1.jpg");
+    private final Image cross = new Image("file:src/main/resources/cross1.png");
     private final Image naught = new Image("file:src/main/resources/naught.png");
     private final Image menu = new Image ("file:src/main/resources/menu.png");
     private final List<Button> buttons = new LinkedList<>();
@@ -49,13 +49,14 @@ public class NaughtsAndCrosses<Tile> extends Application {
     private final GridPane grid = new GridPane();
 
 
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        BackgroundSize backgroundSize = new BackgroundSize(820, 900, true, true, true, false);
+        BackgroundSize backgroundSize = new BackgroundSize(770, 980, true, true, true, false);
         BackgroundImage backgroundImage = new BackgroundImage(board, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         Background background = new Background(backgroundImage);
 
@@ -83,29 +84,29 @@ public class NaughtsAndCrosses<Tile> extends Application {
 //        grid.addRow(6);
 
         grid.getColumnConstraints().add(new ColumnConstraints(20));
-        grid.getColumnConstraints().add(new ColumnConstraints(100));
-        grid.getColumnConstraints().add(new ColumnConstraints(170));
-        grid.getColumnConstraints().add(new ColumnConstraints(170));
-        grid.getColumnConstraints().add(new ColumnConstraints(170));
-        grid.getColumnConstraints().add(new ColumnConstraints(120));
+        grid.getColumnConstraints().add(new ColumnConstraints(135));
+        grid.getColumnConstraints().add(new ColumnConstraints(160));
+        grid.getColumnConstraints().add(new ColumnConstraints(160));
+        grid.getColumnConstraints().add(new ColumnConstraints(160));
+        grid.getColumnConstraints().add(new ColumnConstraints(110));
         grid.getColumnConstraints().add(new ColumnConstraints(20));
         grid.getRowConstraints().add(new RowConstraints(30));
         grid.getRowConstraints().add(new RowConstraints(30));
-        grid.getRowConstraints().add(new RowConstraints(195));
-        grid.getRowConstraints().add(new RowConstraints(170));
-        grid.getRowConstraints().add(new RowConstraints(170));
-        grid.getRowConstraints().add(new RowConstraints(170));
+        grid.getRowConstraints().add(new RowConstraints(210));
+        grid.getRowConstraints().add(new RowConstraints(160));
+        grid.getRowConstraints().add(new RowConstraints(160));
+        grid.getRowConstraints().add(new RowConstraints(160));
         grid.getRowConstraints().add(new RowConstraints(200));
         grid.getRowConstraints().add(new RowConstraints(30));
 
         ImageView img1 = new ImageView(cross);
-        img1.setFitWidth(180);
-        img1.setFitHeight(180);
+        img1.setFitHeight(140);
+        img1.setFitHeight(140);
         img1.setPreserveRatio(true);
 
         ImageView img2 = new ImageView(naught);
-        img2.setFitWidth(200);
-        img2.setFitHeight(200);
+        img2.setFitWidth(140);
+        img2.setFitHeight(140);
         img2.setPreserveRatio(true);
 
         MenuBar menuBar = new MenuBar();
@@ -162,7 +163,7 @@ public class NaughtsAndCrosses<Tile> extends Application {
 
                 buttons.add(button);
                 emptyButtons.add(button);
-                grid.add(button, i+2, j+2);
+                grid.add(button, i+2, j+3);
 
             }
         }
