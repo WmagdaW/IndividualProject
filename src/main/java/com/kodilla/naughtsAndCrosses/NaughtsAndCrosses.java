@@ -47,6 +47,8 @@ public class NaughtsAndCrosses<Tile> extends Application {
     private final List<Button> emptyButtons = new LinkedList<>();
     private final Random random = new Random();
     private final GridPane grid = new GridPane();
+    private final RadioMenuItem menuItem1 = new RadioMenuItem("O");
+    private final RadioMenuItem menuItem2 = new RadioMenuItem("X");
 
 
 
@@ -114,8 +116,36 @@ public class NaughtsAndCrosses<Tile> extends Application {
         Menu menu1 = new Menu("Select symbol");
         menuBar.getMenus().add(menu1);
 //        menu1.setGraphic(new ImageView(menu));
-        MenuItem menuItem1 = new MenuItem("O");
-        MenuItem menuItem2 = new MenuItem("X");
+
+
+//        menuItem1.setOnAction(e -> {
+//            if (isMoveX) {
+//                button.setOnAction(event -> {
+//                    button.setGraphic(new ImageView(naught));
+//                });
+//            } else {
+//                button.setOnAction(event -> {
+//                    button.setGraphic(new ImageView(cross));
+//                });
+//            }
+//        });
+//
+//
+//        menuItem2.setOnAction(f -> {
+//            if (isMoveX) {
+//                button.setOnAction(event -> {
+//                    button.setGraphic(new ImageView(cross));
+//                });
+//            } else {
+//                button.setOnAction(event -> {
+//                    button.setGraphic(new ImageView(naught));
+//                });
+//            }
+//        });
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        toggleGroup.getToggles().add(menuItem1);
+        toggleGroup.getToggles().add(menuItem2);
 
         menu1.getItems().add(menuItem1);
         menu1.getItems().add(menuItem2);
@@ -136,11 +166,16 @@ public class NaughtsAndCrosses<Tile> extends Application {
                 button.setMinSize(200, 200);
                 button.setStyle("-fx-background-color: transparent;");
 
+
                 button.setOnAction(event -> {
                     emptyButtons.remove(button);
 
                     if (isMoveX) {
-                        button.setGraphic(new ImageView(cross));
+                        if (menuItem2.isSelected()) {
+                            button.setGraphic(new ImageView(cross));
+                        } else {
+                            button.setGraphic(new ImageView(naught));
+                        }
                         correctMove = true;
                         button.setDisable(true);
                         checkGame();
@@ -148,7 +183,11 @@ public class NaughtsAndCrosses<Tile> extends Application {
                         isMoveX = !isMoveX;
                         makeComputerMove();
                     } else {
-                        button.setGraphic(new ImageView(naught));
+                        if (menuItem2.isSelected()) {
+                            button.setGraphic(new ImageView(naught));
+                        } else {
+                            button.setGraphic(new ImageView(cross));
+                        }
                         correctMove = true;
                         button.setDisable(true);
                         checkGame();
