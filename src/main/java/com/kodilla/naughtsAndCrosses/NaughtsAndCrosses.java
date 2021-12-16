@@ -32,12 +32,6 @@ import java.util.Random;
 
 public class NaughtsAndCrosses<Tile> extends Application {
 
-    private boolean isMoveX = true;
-    private boolean theEnd;
-    private boolean correctMove = true;
-    private int moveCounter = 0;
-
-
     private final Image board = new Image("file:src/main/resources/boardBrown1.jpg");
     private final Image cross = new Image("file:src/main/resources/cross1.png");
     private final Image naught = new Image("file:src/main/resources/naught.png");
@@ -48,7 +42,10 @@ public class NaughtsAndCrosses<Tile> extends Application {
     private final GridPane grid = new GridPane();
     private final RadioMenuItem menuItem1 = new RadioMenuItem("O");
     private final RadioMenuItem menuItem2 = new RadioMenuItem("X");
-
+    private boolean isMoveX = true;
+    private boolean theEnd;
+    private boolean correctMove = true;
+    private int moveCounter = 0;
 
     public static void main(String[] args) {
         launch(args);
@@ -189,7 +186,7 @@ public class NaughtsAndCrosses<Tile> extends Application {
                         button.setDisable(true);
                         checkGame();
 
-                        isMoveX = !isMoveX;//(czy nie powinno być inMoveX = true?)
+                        isMoveX = !isMoveX;
                     }
                 });
 
@@ -242,7 +239,7 @@ public class NaughtsAndCrosses<Tile> extends Application {
             if (result.get() == ButtonType.OK) {
                 System.out.println("Nowa gra");
             } else {
-                // ... user chose CANCEL or closed the dialog
+
             }
         }
 
@@ -325,62 +322,81 @@ public class NaughtsAndCrosses<Tile> extends Application {
 
     private void makeComputerMove() {
 
-        if (emptyButtons.size() > 0 && buttons.get(4).getGraphic() == null) {
-            buttons.get(4).fire();
-        } else if (emptyButtons.size() > 0) {
-            int index = random.nextInt(emptyButtons.size());
-            emptyButtons.get(index).fire();
+        if (moveHorizontal()) {
+            return;
+        } else if (moveVertical()) {
+            return;
+        } else if (moveDiagonal()) {
+            return;
+        } else {
+            Button button = buttons.get(4);
+            ImageView image = ((ImageView) button.getGraphic());
+            if (image == null) {
+                button.fire();
+            } else {
+                if (emptyButtons.size() > 0) {
+                    int index = random.nextInt(emptyButtons.size());
+                    emptyButtons.get(index).fire();
+                }
+            }
         }
     }
 
 
-    private void moveHorizontal() {   //horizontal
+    private boolean moveHorizontal() {   //horizontal
         for (int i = 0; i < 9; i = i + 3) {
             Button button1 = buttons.get(i);
             Button button2 = buttons.get(i + 1);
             Button button3 = buttons.get(i + 2);
 
-            Image image1 = ((ImageView) button1.getGraphic()).getImage();
-            Image image2 = ((ImageView) button2.getGraphic()).getImage();
-            Image image3 = ((ImageView) button3.getGraphic()).getImage();
+            ImageView image1 = ((ImageView) button1.getGraphic());
+            ImageView image2 = ((ImageView) button2.getGraphic());
+            ImageView image3 = ((ImageView) button3.getGraphic());
 
-            if (emptyButtons.size() > 0 && image1.equals(image2) && button3.getGraphic() == null) {
+            if (emptyButtons.size() > 0 && image1 != null && image2 != null && image1.getImage().equals(image2.getImage()) && button3.getGraphic() == null) {
                 button3.fire();
-            } else if (emptyButtons.size() > 0 && image1.equals(image3) && button2.getGraphic() == null) {
+                return true;
+            } else if (emptyButtons.size() > 0 && image1 != null && image3 != null && image1.getImage().equals(image3.getImage()) && button2.getGraphic() == null) {
                 button2.fire();
-            } else if (emptyButtons.size() > 0 && image2.equals(image3) && button1.getGraphic() == null) {
+                return true;
+            } else if (emptyButtons.size() > 0 && image2 != null && image3 != null && image2.getImage().equals(image3.getImage()) && button1.getGraphic() == null) {
                 button1.fire();
+                return true;
             } else {
-                moveVertical();
+                return false;
             }
-
         }
+        return true;
     }
 
 
-    private void moveVertical() {// vertical
+    private boolean moveVertical() {// vertical
         for (int i = 0; i < 3; i++) {
             Button button4 = buttons.get(i);
             Button button5 = buttons.get(i + 3);
             Button button6 = buttons.get(i + 6);
 
-            Image image4 = ((ImageView) button4.getGraphic()).getImage();
-            Image image5 = ((ImageView) button5.getGraphic()).getImage();
-            Image image6 = ((ImageView) button6.getGraphic()).getImage();
+            ImageView image4 = ((ImageView) button4.getGraphic());
+            ImageView image5 = ((ImageView) button5.getGraphic());
+            ImageView image6 = ((ImageView) button6.getGraphic());
 
-            if (emptyButtons.size() > 0 && image4.equals(image5) && button6.getGraphic() == null) {
+            if (emptyButtons.size() > 0 && image4 != null && image5 != null && image4.getImage().equals(image5.getImage()) && button6.getGraphic() == null) {
                 button6.fire();
-            } else if (emptyButtons.size() > 0 && image4.equals(image6) && button5.getGraphic() == null) {
+                return true;
+            } else if (emptyButtons.size() > 0 && image4 != null && image6 != null && image4.getImage().equals(image6.getImage()) && button5.getGraphic() == null) {
                 button5.fire();
-            } else if (emptyButtons.size() > 0 && image5.equals(image6) && button4.getGraphic() == null) {
+                return true;
+            } else if (emptyButtons.size() > 0 && image5 != null && image6 != null && image5.getImage().equals(image6.getImage()) && button4.getGraphic() == null) {
                 button4.fire();
+                return true;
             } else {
-                moveDiagonal();
+                return false;
             }
         }
+        return true;
     }
 
-    private void moveDiagonal() { // diagonal
+    private boolean moveDiagonal() { // diagonal
         Button button7 = buttons.get(0);
         Button button8 = buttons.get(4);
         Button button9 = buttons.get(8);
@@ -388,28 +404,33 @@ public class NaughtsAndCrosses<Tile> extends Application {
         Button button11 = buttons.get(6);
 
 
-        Image image7 = ((ImageView) button7.getGraphic()).getImage();
-        Image image8 = ((ImageView) button8.getGraphic()).getImage();
-        Image image9 = ((ImageView) button9.getGraphic()).getImage();
-        Image image10 = ((ImageView) button10.getGraphic()).getImage();
-        Image image11 = ((ImageView) button11.getGraphic()).getImage();
+        ImageView image7 = ((ImageView) button7.getGraphic());
+        ImageView image8 = ((ImageView) button8.getGraphic());
+        ImageView image9 = ((ImageView) button9.getGraphic());
+        ImageView image10 = ((ImageView) button10.getGraphic());
+        ImageView image11 = ((ImageView) button11.getGraphic());
 
-        if (emptyButtons.size() > 0 && image7.equals(image8) && button9.getGraphic() == null) {
+        if (emptyButtons.size() > 0 && image7 != null && image8 != null && image7.getImage().equals(image8.getImage()) && button9.getGraphic() == null) {
             button9.fire();
-        } else if (emptyButtons.size() > 0 && image7.equals(image9) && button8.getGraphic() == null) {
+            return true;
+        } else if (emptyButtons.size() > 0 && image7 != null && image9 != null && image7.getImage().equals(image9.getImage()) && button8.getGraphic() == null) {
             button8.fire();
-        } else if (emptyButtons.size() > 0 && image8.equals(image9) && button7.getGraphic() == null) {
+            return true;
+        } else if (emptyButtons.size() > 0 && image8 != null && image9 != null && image8.getImage().equals(image9.getImage()) && button7.getGraphic() == null) {
             button7.fire();
-        } else if (emptyButtons.size() > 0 && image10.equals(image8) && button11.getGraphic() == null) {
+            return true;
+        } else if (emptyButtons.size() > 0 && image10 != null && image8 != null && image10.getImage().equals(image8.getImage()) && button11.getGraphic() == null) {
             button11.fire();
-        } else if (emptyButtons.size() > 0 && image10.equals(image11) && button8.getGraphic() == null) {
+            return true;
+        } else if (emptyButtons.size() > 0 && image10 != null && image11 != null && image10.getImage().equals(image11.getImage()) && button8.getGraphic() == null) {
             button8.fire();
-        } else if (emptyButtons.size() > 0 && image8.equals(image11) && button10.getGraphic() == null) {
+            return true;
+        } else if (emptyButtons.size() > 0 && image8 != null && image11 != null && image8.getImage().equals(image11.getImage()) && button10.getGraphic() == null) {
             button10.fire();
-        } else if (emptyButtons.size() > 0) {
-                int index = random.nextInt(emptyButtons.size());
-                emptyButtons.get(index).fire();
-          }
+            return true;
+        } else {
+            return false;
         }
-    }
 
+    }
+}
